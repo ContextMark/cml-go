@@ -1,4 +1,4 @@
-package cml
+package internal
 
 /**
 ------------------语法规范-----------------------
@@ -26,7 +26,11 @@ const (
 
 /**
 ------------------实现规范-----------------------
-由于有交替规律，使用双列表，比使用基元类型抽象性能更高
+提供两种中间结构实现：
+1、基元类型抽象的单序列
+2、基元类型分类双序列
+由于CML有交替规律，使用双列表，比使用基元类型抽象性能更高，可以显著减少内存分配次数
+但框架支持两种
 */
 
 // 基元类型
@@ -37,13 +41,19 @@ const (
 	TypeSeparator
 )
 
-//语义基元，构建序列的单元
+//语义基元，构建单序列的单元
 type CmlElement struct {
 	Type  CmlElementType
 	Value string
 }
 
-//解析后的两类基元的序列
+/**
+由于Go语言限制，[]*CmlElement 不能直接作为类型接收者挂载方法
+所以需要别名抽象来实现
+*/
+type CmlElements []*CmlElement
+
+//语义基元集合，两类基元的双序列
 type CmlFragments struct {
 	Tokens    []string // 所有的实体内容
 	Relations []string // 所有的关系符 (@, ., +, :, 空格)
