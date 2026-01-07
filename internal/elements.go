@@ -21,6 +21,7 @@ import (
 
 // 检查 CML 基元序列的奇偶交替特征是否合法
 func (elements *CmlElements) IsValid() error {
+
 	if elements == nil || len(*elements) == 0 {
 		return errors.New("CML基元序列不应为空")
 	}
@@ -46,6 +47,9 @@ func (elements *CmlElements) IsValid() error {
 
 // EncodeA 编码成 a 模式，双层base58，字符集普适性最好，但性能不利于大规模场景
 func (elements *CmlElements) EncodeA() (string, error) {
+	if elements == nil || len(*elements) == 0 {
+		return "", errors.New("CML基元序列不应为nil")
+	}
 	var sb strings.Builder // 使用自动扩容的切片来避免循环分配，提升性能
 	for _, el := range *elements {
 		if el.Type == TypeToken {
@@ -62,6 +66,9 @@ func (elements *CmlElements) EncodeA() (string, error) {
 
 // EncodeC 编码成 c 模式（高性能 base64）
 func (elements *CmlElements) EncodeC() (string, error) {
+	if elements == nil || len(*elements) == 0 {
+		return "", errors.New("CML基元序列不应为nil")
+	}
 	var sb strings.Builder
 	for _, el := range *elements {
 		if el.Type == TypeToken {
@@ -75,11 +82,17 @@ func (elements *CmlElements) EncodeC() (string, error) {
 
 // EncodeP 编码成 p 模式（单层明文混编，最小熵增）
 func (elements *CmlElements) EncodeP() (string, error) {
+	if elements == nil || len(*elements) == 0 {
+		return "", errors.New("CML基元序列不应为nil")
+	}
 	return "p" + elements.buildMixedPayload(), nil
 }
 
 // EncodeQ 编码成 q 模式（双层混编，在不可读的前提上，提供最小熵增）
 func (elements *CmlElements) EncodeQ() (string, error) {
+	if elements == nil || len(*elements) == 0 {
+		return "", errors.New("CML基元序列不应为nil")
+	}
 	payload := elements.buildMixedPayload()
 	return "q" + base64.RawURLEncoding.EncodeToString([]byte(payload)), nil
 }

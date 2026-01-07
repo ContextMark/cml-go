@@ -58,14 +58,17 @@ func New(arr []string) (*CmlFragments, error) {
 // 检查 CmlFragments 是否符合奇偶性特征
 // CML 规则：Token 数量必须比 Relations 数量多 1 (即：T R T R T)
 func (f *CmlFragments) IsValid() error {
+	if f == nil {
+		return errors.New("CML基元双序列不应为nil")
+	}
 	tLen := len(f.Tokens)
 	rLen := len(f.Relations)
 
 	if tLen == 0 {
-		return errors.New("CML基元序列不应为空")
+		return errors.New("CML基元双序列的token序列不应为空")
 	}
 	if tLen != rLen+1 {
-		return fmt.Errorf("CML基元序列组成不合法: Token数量(%d)与关系符数量(%d)不匹配", tLen, rLen)
+		return fmt.Errorf("CML基元双序列组成不合法: Token数量(%d)与关系符数量(%d)不匹配", tLen, rLen)
 	}
 	return nil
 }
@@ -123,12 +126,18 @@ func (f *CmlFragments) EncodeC() (string, error) {
 // EncodeP 编码成 p 模式：单层明文混编
 // 保持最小熵增，提供最佳的可读性与长度比
 func (f *CmlFragments) EncodeP() (string, error) {
+	if err := f.IsValid(); err != nil {
+		return "", err
+	}
 	return "p" + f.buildBase64URLPayload(), nil
 }
 
 // EncodeQ 编码成 q 模式：双层混编
 // 在不可读的前提下，通过智能判断减少不必要的 Base64 转换，提供最小熵增
 func (f *CmlFragments) EncodeQ() (string, error) {
+	if err := f.IsValid(); err != nil {
+		return "", err
+	}
 	payload := f.buildBase64URLPayload()
 	return "q" + base64.RawURLEncoding.EncodeToString([]byte(payload)), nil
 }
