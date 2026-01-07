@@ -97,7 +97,8 @@ func (f *CMLDouble) IsValid() error
 ```
 ## Documentation
 
+本项目采用MIT宽松授权。本项目是对标记语言 Context Mark Language (CML)规范的标准实现，未做语法演绎，也不影响语言本身的过渡条款。
+
 原始语言文档 ：[doc-war.com/CML](https://doc-war.com/CML/)
 
-## License
-MIT
+原始协议仓库链接：https://github.com/ContextMark/CML
