@@ -15,6 +15,15 @@ import (
 	"github.com/shengdoushi/base58"
 )
 
+func New(slice []string) (CmlElements, error) {
+	cmlElements := CmlElements{}
+	type CmlElement struct {
+		Type  CmlElementType
+		Value string
+	}
+
+}
+
 /**
 --- 序列检查方法 ---
 */

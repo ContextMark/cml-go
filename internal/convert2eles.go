@@ -11,8 +11,8 @@ import (
 	"github.com/shengdoushi/base58"
 )
 
-// CML2Elements 将编码后的CML字符串解析为基元序列
-func CML2Elements(encoded string) (CmlElements, error) {
+// CML2Elements 将CML字符串解析为基元序列
+func CML2Elements(encoded string) (*CmlElements, error) {
 	//基础的长度和首字符检查
 	if err := cmlBaseCheck(encoded); err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func CML2Elements(encoded string) (CmlElements, error) {
 }
 
 // parseRawPayload 解析解密后的原始荷载字符串
-func parseRawPayload2Single(raw string, mode uint8) ([]*CmlElement, error) {
+func parseRawPayload2Single(raw string, mode uint8) (*CmlElements, error) {
 	n := len(raw)
 	if n == 0 {
 		return nil, fmt.Errorf("非法的空CML")
@@ -67,7 +67,7 @@ func parseRawPayload2Single(raw string, mode uint8) ([]*CmlElement, error) {
 	1、对于 A 和 C 模式，Token 是全量编码过的
 	2、对于 Q 和 P 模式，Token 可能是明文或带 ! 的编码文
 	*/
-	var elements []*CmlElement
+	var elements CmlElements
 	lastIdx := 0
 	for i := 0; i < len(raw); i++ {
 		/**
@@ -110,5 +110,5 @@ func parseRawPayload2Single(raw string, mode uint8) ([]*CmlElement, error) {
 	}
 	//将token加入基元序列
 	elements = append(elements, &CmlElement{Type: TypeToken, Value: val})
-	return elements, nil
+	return &elements, nil
 }

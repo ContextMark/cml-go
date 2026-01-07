@@ -1,0 +1,18 @@
+# 可执行文件（如果你选择在项目内 build）
+*.exe
+*.out
+*.test
+*.bin
+
+# Go coverage
+coverage.out
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+
+# 临时文件
+tmp/
+
+# go项目是如此的简洁，几乎不需要ignore！

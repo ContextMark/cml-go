@@ -9,6 +9,48 @@ import (
 	"github.com/shengdoushi/base58"
 )
 
+// New 将平铺的字符串切片转换为双列表结构的 CmlFragments
+// 输入示例: []string{"user", "@", "domain", ".", "com"}
+// 输出示例: Tokens: ["user", "domain", "com"], Relations: ["@", "."]
+func New(arr []string) (*CmlFragments, error) {
+	size := len(arr)
+
+	// 1. 基础校验：CML 物理特性要求序列必须是奇数 (T R T R T)
+	if size == 0 {
+		return nil, errors.New("切片不能为空")
+	}
+	if size%2 == 0 {
+		return nil, errors.New("CML 序列长度必须为奇数（Token 与 关系符 必须交替出现）")
+	}
+
+	// 2. 预分配内存：已知长度，直接分配以提升性能
+	tokenCount := (size / 2) + 1
+	relationCount := size / 2
+
+	fragments := &CmlFragments{
+		Tokens:    make([]string, 0, tokenCount),
+		Relations: make([]string, 0, relationCount),
+	}
+
+	// 3. 拆解序列
+	for i, val := range arr {
+		if i%2 == 0 {
+			// 偶数索引一定是 Token
+			fragments.Tokens = append(fragments.Tokens, val)
+		} else {
+			// 奇数索引一定是 Relation
+			const seps = "@.+: "
+			// CML 规范定义的五个合法符：@, ., +, :, 空格
+			if len(val) != 1 || !strings.ContainsAny(val, seps) {
+				return nil, fmt.Errorf("语法错误: CML禁止以关系符开头:'%s'", val)
+			}
+			fragments.Relations = append(fragments.Relations, val)
+		}
+	}
+
+	return fragments, nil
+}
+
 /**
 --- 一、基元序列检查 ---
 */
