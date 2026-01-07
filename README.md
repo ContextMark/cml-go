@@ -61,8 +61,8 @@ CML语言语法层，以**单字符串编码的优势**为中心，专注纯粹�
 func IsCML(encoded string) error   //验证CML是否合法
 func CML2A(encoded string) (string, error)   //转换成a模式存储，双层Base58
 func CML2C(encoded string) (string, error)   //转换成c模式存储，双层Base64URL
-func CML2P(encoded string) (string, error)   //转换成p模式存储, 双层混编
-func CML2Q(encoded string) (string, error)   //转换成q模式存储, 单层混编
+func CML2P(encoded string) (string, error)   //转换成p模式存储, 单层明文混编
+func CML2Q(encoded string) (string, error)   //转换成q模式存储, 双层混编
 ```
 
 - 编码转基元序列

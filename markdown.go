@@ -164,8 +164,8 @@ func fromMarkdown(md string) ([]string, error) {
 		} else {
 			// 偶数位 (0, 2, 4...) 必须是 Token
 			// 额外检查：确保 Token 位（即当前关系符的前后）不是空的
-			if result[i-1] == "" {
-				return nil, fmt.Errorf("语法错误:Token不应该是空串 (索引 %d)", i-1)
+			if val == "" {
+				return nil, fmt.Errorf("语法错误:Token不应该是空串 (索引 %d)", i)
 			}
 		}
 	}
