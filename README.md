@@ -51,9 +51,19 @@ CML语言语法层，以**单字符串编码的优势**为中心，专注纯粹�
 
 ## Encoding & Decoding
 
-本框架只提供三类能力：
-* cml字符串和语义基元之间的互转（语法层方法）
-* cml字符串和自然语言、数组之间的互转（上层内置）
+```mermaid
+graph LR
+A(cml编码字符串)
+E(基元双序列)
+F(基元单序列)
+M(Markdown标记、数组)
+M<-->|上层方法|E
+M<-->|上层方法|F
+E<-->|语法层编解码|A
+F<-->|语法层编解码|A
+```
+
+
 
 - 编码在不同模式之间互转
 ```go
@@ -97,7 +107,7 @@ func (f *CMLDouble) IsValid() error
 ```
 ## Documentation
 
-本项目采用MIT宽松授权。本项目是对标记语言 Context Mark Language (CML)规范的标准实现，未做语法演绎，也不影响语言本身的过渡条款。
+本项目采用MIT宽松授权。本项目是对 Context Mark Language (CML)核心规范的标准实现。
 
 原始语言文档 ：[doc-war.com/CML](https://doc-war.com/CML/)
 
